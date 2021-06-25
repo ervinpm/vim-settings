@@ -27,6 +27,7 @@ set signcolumn=yes
 set noeb
 set novb
 set belloff=all
+let mapleader = "," "map leader to comma
 
 if &term == "alacritty"        
   let &term = "xterm-256color"
@@ -36,6 +37,15 @@ endif
 if &term =~ '^xterm'
   let &t_EI .= "\<Esc>[2 q"
   let &t_SI .= "\<Esc>[6 q" 
+endif
+
+" tmux cursor changes
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+else
+    let &t_SI = "\e[5 q"
+    let &t_EI = "\e[2 q"
 endif
 
 " controlp
