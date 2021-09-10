@@ -50,6 +50,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'neovim/nvim-lspconfig'
 
@@ -80,6 +81,7 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " lua configurations
 lua require('lsp-config')
 lua require('cmp-config')
+lua require('treesitter-config')
 
 " java lsp (requires jdtls setup)
 augroup jdtls_lsp
