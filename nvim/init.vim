@@ -47,7 +47,17 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'mtdl9/vim-log-highlighting'
+Plug 'martinda/jenkinsfile-vim-syntax'
 Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'tpope/vim-fugitive'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lua/popup.nvim'
+
+" Telescope stuff
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -72,6 +82,9 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 
+" Open init.vim
+nnoremap <leader>i :e ~/.config/nvim/init.vim<cr>
+
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope git_files<cr>
@@ -83,8 +96,9 @@ lua require('lsp-config')
 lua require('cmp-config')
 lua require('treesitter-config')
 
-" java lsp (requires jdtls setup)
+" java lsp
 augroup jdtls_lsp
     autocmd!
     autocmd FileType java lua require'jdtls_setup'.setup()
 augroup end
+
