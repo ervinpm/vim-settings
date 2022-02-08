@@ -82,14 +82,12 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 
-" Open init.vim
-nnoremap <leader>i :e ~/.config/nvim/init.vim<cr>
-
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope git_files<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>i <cmd>lua require'telescope.builtin'.find_files { cwd = '~/.config/nvim', file_ignore_patterns = { "^undodir/" } }<cr>
 
 " lua configurations
 lua require('lsp-config')
