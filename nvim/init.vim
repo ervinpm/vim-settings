@@ -25,6 +25,7 @@ set termguicolors
 set scrolloff=8
 set signcolumn=yes
 " set colorcolumn=80
+set cursorline
 let mapleader = "," "map leader to comma
 
 if &term == "alacritty"        
