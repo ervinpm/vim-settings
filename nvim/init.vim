@@ -81,8 +81,9 @@ colorscheme onedark
 
 " NERD Tree Configuration
 nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <leader>r :NERDTreeFind<CR>
 nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
+" nnoremap <C-t> :NERDTreeToggle<CR>
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
