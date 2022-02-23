@@ -2,60 +2,38 @@ local M = {}
 
 function M.setup()
     local on_attach = function(client, bufnr)
-      require'jdtls.setup'.add_commands()
-      require'jdtls'.setup_dap()
-      require'cmp'.setup {
-            snippet = {
-              expand = function(args)
-                vim.fn["vsnip#anonymous"](args.body)
-              end,
-            },
-            mapping = {
-                ['<Tab>'] = cmp.mapping(function(fallback)
-                  if vim.fn.pumvisible() == 1 then
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n', true)
-                  elseif has_words_before() and vim.fn['vsnip#available']() == 1 then
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-expand-or-jump)', true, true, true), '', true)
-                  else
-                    fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
-                  end
-                end, { 'i', 's' }),
-
-                ['<S-Tab>'] = cmp.mapping(function()
-                  if vim.fn.pumvisible() == 1 then
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n', true)
-                  elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-                    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-jump-prev)', true, true, true), '', true)
-                  end
-                end, { 'i', 's' }),
-            },
-            sources = {
-              { name = 'nvim_lsp' },
-            }
-        }
 
       local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
       local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
+      -- Enable completion triggered by <c-x><c-o>
       buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+      -- Additional commands (i.e. JdtCompile)
+      require'jdtls.setup'.add_commands()
 
       -- Mappings.
       local opts = { noremap=true, silent=true }
-      buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-      buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-      buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+
+      -- See `:help vim.lsp.*` for documentation on any of the below functions
+      buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+      buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+      buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
       buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
       buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-      buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-      buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-      buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-      buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-      buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-      buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references() && vim.cmd("copen")<CR>', opts)
-      buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+      buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+      buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+      buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+      buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+      buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+      buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+      buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+      buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
       buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
       buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-      buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+      buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+      buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+      
       -- Java specific
       buf_set_keymap("n", "<leader>di", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
       buf_set_keymap("n", "<leader>dt", "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
@@ -63,19 +41,6 @@ function M.setup()
       buf_set_keymap("v", "<leader>de", "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", opts)
       buf_set_keymap("n", "<leader>de", "<Cmd>lua require('jdtls').extract_variable()<CR>", opts)
       buf_set_keymap("v", "<leader>dm", "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", opts)
-
-      buf_set_keymap("n", "<leader>cf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-      vim.api.nvim_exec([[
-          hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-          hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-          hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-          augroup lsp_document_highlight
-            autocmd!
-            autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-            autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-          augroup END
-      ]], false)
 
     end
 
@@ -96,108 +61,46 @@ function M.setup()
         }
     }
 
-    local workspace_folder = home .. "/home/ervin/workspace" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+    -- change this to current when needed
+    local gradle_home = home .. "/.sdkman/candidates/gradle/3.5"
+    local workspace_folder = home .. "/workspace/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+
     local config = {
+        cmd = {'java-lsp', workspace_folder},
         flags = {
           allow_incremental_sync = true,
         };
         capabilities = capabilities,
         on_attach = on_attach,
+        settings = {
+            java = {
+                format = {
+                    settings = {
+                        url = 'home .. /.config/nvim/formatter/java-format.xml'
+                    }
+                },
+                configuration = {
+                    runtimes = {
+                        {
+                          name = "JavaSE-11",
+                          path = "/usr/lib/jvm/java-11-openjdk-amd64",
+                        },
+                        {
+                          name = "JavaSE-1.8",
+                          path = "/usr/lib/jvm/java-8-openjdk-amd64",
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    config.settings = {
-        java = {
-          signatureHelp = { enabled = true };
-          contentProvider = { preferred = 'fernflower' };
-          completion = {
-            favoriteStaticMembers = {
-              "org.hamcrest.MatcherAssert.assertThat",
-              "org.hamcrest.Matchers.*",
-              "org.hamcrest.CoreMatchers.*",
-              "org.junit.jupiter.api.Assertions.*",
-              "java.util.Objects.requireNonNull",
-              "java.util.Objects.requireNonNullElse",
-              "org.mockito.Mockito.*"
-            }
-          };
-          sources = {
-            organizeImports = {
-              starThreshold = 9999;
-              staticStarThreshold = 9999;
-            };
-          };
-          codeGeneration = {
-            toString = {
-              template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}"
-            }
-          };
-          configuration = {
-            runtimes = {
-              {
-                name = "OpenJDK-8",
-                path = home .. "/usr/lib/jvm/java-8-openjdk",
-              },
-              {
-                name = "JavaSE-11",
-                path = home .. "/usr/lib/jvm/java-11-openjdk",
-              },
-              {
-                name = "JavaSE-16",
-                path = home .. "/usr/lib/jvm/java-16-openjdk",
-              },
-            }
-          };
-        };
-    }
-    config.cmd = {'java-lsp.sh', workspace_folder}
-    config.on_attach = on_attach
-    config.on_init = function(client, _)
-        client.notify('workspace/didChangeConfiguration', { settings = config.settings })
-    end
-
-    local extendedClientCapabilities = require'jdtls'.extendedClientCapabilities
-    extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
-    config.init_options = {
-      -- bundles = bundles;
-      extendedClientCapabilities = extendedClientCapabilities;
-    }
-
-    -- UI
-    local finders = require'telescope.finders'
-    local sorters = require'telescope.sorters'
-    local actions = require'telescope.actions'
-    local pickers = require'telescope.pickers'
-    require('jdtls.ui').pick_one_async = function(items, prompt, label_fn, cb)
-      local opts = {}
-      pickers.new(opts, {
-        prompt_title = prompt,
-        finder    = finders.new_table {
-          results = items,
-          entry_maker = function(entry)
-            return {
-              value = entry,
-              display = label_fn(entry),
-              ordinal = label_fn(entry),
-            }
-          end,
-        },
-        sorter = sorters.get_generic_fuzzy_sorter(),
-        attach_mappings = function(prompt_bufnr)
-          actions.goto_file_selection_edit:replace(function()
-            local selection = actions.get_selected_entry(prompt_bufnr)
-            actions.close(prompt_bufnr)
-
-            cb(selection.value)
-          end)
-
-          return true
-        end,
-      }):find()
-    end
+    -- config.cmd = {'java-lsp', workspace_folder}
+    -- config.on_attach = on_attach
 
     -- Server
     require('jdtls').start_or_attach(config)
+
 end
 
 return M
-
