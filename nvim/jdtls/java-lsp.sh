@@ -16,7 +16,7 @@ GRADLE_HOME=/usr/share/java/gradle /usr/lib/jvm/java-11-openjdk/bin/java \
   -Dlog.level=ALL \
   -Xms1g \
   -Xmx2G \
-  -javaagent:/home/ervin/code/eclipse.jdt.ls/lombok.jar \
+  -javaagent:$HOME/code/eclipse.jdt.ls/lombok.jar \
   -jar $(echo "$JAR") \
   -configuration "$HOME/code/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_linux" \
   -data "${1:-$HOME/workspace}" \
