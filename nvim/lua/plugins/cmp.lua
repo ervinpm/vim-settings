@@ -1,12 +1,13 @@
 return {
-    {'hrsh7th/cmp-nvim-lsp', dependencies = 'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-buffer'},
-    {'hrsh7th/cmp-path'},
-    {'hrsh7th/cmp-cmdline'},
-    {'hrsh7th/nvim-cmp',
+    { 'hrsh7th/cmp-nvim-lsp', dependencies = 'neovim/nvim-lspconfig' },
+    { 'hrsh7th/cmp-buffer' },
+    { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-cmdline' },
+    {
+        'hrsh7th/nvim-cmp',
         config = function()
             -- Set up nvim-cmp.
-            local cmp = require'cmp'
+            local cmp = require 'cmp'
 
             cmp.setup({
                 snippet = {
@@ -14,7 +15,7 @@ return {
                         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
                     end,
                 },
-                window = { },
+                window = {},
                 mapping = cmp.mapping.preset.insert({
                     ['<C-p>'] = cmp.mapping.select_prev_item(),
                     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -28,12 +29,17 @@ return {
                     { name = 'nvim_lsp' },
                     { name = 'luasnip' }, -- For luasnip users.
                 }, {
-                        { name = 'buffer' },
-                    })
+                    { name = 'buffer' },
+                })
             })
-
         end
     },
-    {'L3MON4D3/LuaSnip'},
-    {'saadparwaiz1/cmp_luasnip'},
+    {
+        'L3MON4D3/LuaSnip',
+        dependencies = { "rafamadriz/friendly-snippets" },
+        config = function()
+            require('luasnip.loaders.from_vscode').lazy_load()
+        end
+    },
+    { 'saadparwaiz1/cmp_luasnip' },
 }
