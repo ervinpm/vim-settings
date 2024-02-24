@@ -1,4 +1,4 @@
-# My VIM Settings
+# My VIM / NeoVim Settings
 My default vim settings
 
 ## Installation
@@ -13,15 +13,19 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 mkdir ~/.vim/undodir
 ```
 
-## NeoVim
-1. Install Vim Plug in the neovim config folder
+## NeoVim Installation
+1. Clone the repository
 
 ```console
-$ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+$ git clone https://github.com/ervinpm/vim-settings.git
 ```
 
 2. Copy neovim folder to `.config/nvim`
+
+```console
+$ cp -r vim-settings/nvim ~/.config
+```
+
 3. Create the undo folder
 
 ```sh
