@@ -16,24 +16,24 @@ mkdir ~/.vim/undodir
 ## NeoVim Installation
 1. Clone the repository
 
-```console
-$ git clone https://github.com/ervinpm/vim-settings.git
+```sh
+git clone https://github.com/ervinpm/vim-settings.git
 ```
 
 2. Copy neovim folder to `.config/nvim`
 
-```console
-$ cp -r vim-settings/nvim ~/.config
+```sh
+cp -r vim-settings/nvim ~/.config
 ```
 
 3. Create the undo folder
 
 ```sh
-$ mkdir ~/.config/nvim/undodir
+mkdir ~/.config/nvim/undodir
 ```
 
 4. Install `xclip` to enable copy and pasting from system
 
 ```sh
-$ sudo pacman -Syu xclip
+sudo pacman -Syu xclip
 ```
