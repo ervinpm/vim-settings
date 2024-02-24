@@ -1,3 +1,6 @@
+local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
+local root_dir = require("jdtls.setup").find_root(root_markers)
+
 local config = {
     -- uses mason jdtls install path
     cmd = {
@@ -14,7 +17,7 @@ local config = {
         '-javaagent:' .. vim.fn.stdpath('data') .. '/mason/packages/jdtls/lombok.jar',
         '-jar', vim.fn.stdpath('data') .. '/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.700.v20231214-2017.jar',
         '-configuration', vim.fn.stdpath('data') .. '/mason/packages/jdtls/config_linux',
-        '-data', os.getenv('HOME') .. '/workspace' .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+        '-data', os.getenv('HOME') .. '/workspace/' .. vim.fn.fnamemodify(root_dir, ":p:h:t")
     },
 
     root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
