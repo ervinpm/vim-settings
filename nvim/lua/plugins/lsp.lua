@@ -7,7 +7,7 @@ return {
     {'williamboman/mason-lspconfig.nvim',
         config = function()
             require('mason-lspconfig').setup({
-                ensure_installed = { 'lua_ls', 'pyright', 'eslint', 'jdtls', 'bashls' }
+                ensure_installed = { 'lua_ls', 'pyright', 'eslint', 'jdtls', 'bashls', 'dockerls' }
             })
         end
     },
