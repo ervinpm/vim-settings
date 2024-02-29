@@ -10,3 +10,5 @@ vim.keymap.set('n', 'gB', "<cmd>bp<cr>", {})
 
 -- other stuff
 vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<CR>', {})
+vim.keymap.set('n', '<leader>k', ':cp', {desc = 'quick fix previous'})
+vim.keymap.set('n', '<leader>j', ':cn', {desc = 'quick fix next'})
