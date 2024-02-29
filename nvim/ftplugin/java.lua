@@ -23,6 +23,11 @@ local config = {
     root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
     settings = {
         java = {
+            format = {
+                    settings = {
+                        url = os.getenv('HOME') .. '/.config/nvim/formatter/java-format.xml'
+                    }
+                },
             runtimes = {
                 {
                     name = "OpenJDK-8",
